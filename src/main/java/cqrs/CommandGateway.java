@@ -3,6 +3,7 @@ package cqrs;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,9 +18,13 @@ public class CommandGateway {
 
     private final Map<String, CommandHandler> handlers;
 
+    public CommandGateway() {
+        this.handlers = new ConcurrentHashMap<>();
+    }
+
     public CommandGateway(List<CommandHandler> commandHandlers) {
         this.handlers = commandHandlers.stream()
-                .collect(Collectors.toMap(CommandHandler::tag, Function.identity()));
+                .collect(Collectors.toConcurrentMap(CommandHandler::tag, Function.identity()));
     }
 
     public void register(CommandHandler handler) {

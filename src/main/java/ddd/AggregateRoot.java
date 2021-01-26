@@ -9,6 +9,4 @@ import java.io.Serializable;
  * @date 2020-08-28
  */
 public interface AggregateRoot<T extends Serializable> extends Entity<T> {
-
-
 }
